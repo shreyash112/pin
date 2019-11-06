@@ -1,69 +1,45 @@
-/* Modified 9/25/85 - use MAXNUM-1 for quick, eliminate 3 statements in quick */
- 
-#include <stdio.h>
-#define MAXNUM 2000 
-#define COUNT 100
-#define MODULUS ((long) 0x20000)
-#define C 13849L
-#define A 25173L
- 
-static long seed = 7L;
-       long random();
-       long buffer[MAXNUM] = {0};
- 
-main()
-{
-int i,j;
-long temp;
-/* printf("Filling array and sorting %d times \n",COUNT); */
-for(i=0;i<COUNT;++i)
-	{
-	for(j=0;j<MAXNUM;++j)
-		{
-		temp=random(MODULUS);
-		if (temp<0L)
-			temp=(-temp);
-		buffer[j]=temp;
-		}
-	/* printf("Buffer full,iteration %d\n",i); */
-	quick(0,MAXNUM-1,buffer);
-	}
-/* printf("done\n"); */
-	exit(0);
+/*=================================================================================
+ # gcd.c
+
+ #  Copyright (c) 2018 ASCS Laboratory (ASCS Lab/ECE/BU)
+ #  Permission is hereby granted, free of charge, to any person obtaining a copy
+ #  of this software and associated documentation files (the "Software"), to deal
+ #  in the Software without restriction, including without limitation the rights
+ #  to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
+ #  copies of the Software, and to permit persons to whom the Software is
+ #  furnished to do so, subject to the following conditions:
+ #  The above copyright notice and this permission notice shall be included in
+ #  all copies or substantial portions of the Software.
+
+ #  THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+ #  IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+ #  FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
+ #  AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
+ #  LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
+ #  OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
+ #  THE SOFTWARE.
+ ==================================================================================*/
+
+int gcd ( int a, int b ) {
+  int c;
+  if (a == b)
+  	c = a;
+  else {
+  	if(a > b)
+  		a = a - b;
+  	else
+  		b = b - a;
+  	c = gcd(a,b);
+  }
+  return c;
 }
- 
- 
-quick(lo,hi,base)
-int lo,hi;
-long base[];
- 
-{
-int i,j;
-long pivot,temp;
- 
-if(lo<hi)
-	{
-	for(i=lo,j=hi,pivot=base[hi];i<j;)
-		{
-		while(i<j && base[i]<=pivot)
-			++i;
-		while(j>i && base[j]>=pivot)
-			--j;
-		if(i<j)
-			{
-			temp = base[i];
-			base[i]=base[j];
-			base[j]=temp;
-			}
-		}
-	quick(lo,i-1,base);
-	quick(i+1,hi,base);
-	}
-}
- 
-long random(size)
-long size;
-{
-seed=seed *A+C;
-return(seed%size);
-}
+
+ int main(void)
+ {
+    int n1, n2, answer;
+
+    n1 = 1024;
+    n2 = 48;
+	answer = gcd(n1, n2);
+    return answer;
+ }
